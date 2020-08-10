@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import MenuIcon from '@material-ui/icons/Menu';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Navbar = () => {
+const Navbar = ({ cartData }: any) => {
   const classes = useStyles();
   return (
     <Fragment>
@@ -33,7 +34,7 @@ const Navbar = () => {
             Shopping cart
           </Typography>
           <IconButton>
-            <Badge badgeContent={4} color="secondary">
+            <Badge badgeContent={cartData.planets.length} color="secondary">
               <ShoppingCartIcon />
             </Badge>
           </IconButton>
@@ -43,4 +44,6 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+const mapStateToProps = (state: any) => ({ cartData: state.cart });
+
+export default connect(mapStateToProps)(Navbar);

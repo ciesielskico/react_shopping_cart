@@ -1,0 +1,57 @@
+import { PayloadAction } from '../../models/action.model';
+import { CartState } from '../../models/cart.model';
+import { Planet, PlanetInCart } from '../../models/planet.model';
+import { CartActionTypes } from './cartTypes';
+
+const initialState = {
+  planets: [],
+};
+
+const cartReducer = (state = initialState, action: PayloadAction<CartActionTypes, Planet>) => {
+  switch (action.type) {
+    case CartActionTypes.ADD_TO_CART:
+      return {
+        ...state,
+        planets: addToCart(state, action.payload as Planet),
+      };
+    case CartActionTypes.REMOVE_FROM_CART:
+      return {
+        ...state,
+        planets: state.planets.filter((planet) => planet !== action.payload),
+      };
+    case CartActionTypes.CHANGE_PRODUCT_AMOUNT:
+      return {
+        ...state,
+        planets: changeProductAmount(
+          state,
+          (action.payload as any).planet,
+          (action.payload as any).increment
+        ),
+      };
+
+    default:
+      return state;
+  }
+};
+
+const addToCart = (state: CartState, planet: Planet) => {
+  const planetInCart = state.planets.find((filteredPlanet) => filteredPlanet.url === planet.url);
+  return planetInCart
+    ? [
+        ...state.planets.filter((filteredPlanet) => filteredPlanet.url !== planet.url),
+        { ...planetInCart, amount: planetInCart.amount + 1 },
+      ]
+    : [...state.planets, { ...planet, amount: 1 }];
+};
+
+const changeProductAmount = (state: CartState, planet: PlanetInCart, increment: boolean) => {
+  return [
+    ...state.planets,
+    {
+      ...state.planets.find((foundPlanet) => foundPlanet === planet),
+      amount: increment ? planet.amount++ : planet.amount--,
+    },
+  ];
+};
+
+export default cartReducer;
