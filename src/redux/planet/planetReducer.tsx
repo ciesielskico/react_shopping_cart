@@ -1,5 +1,5 @@
-import { PayloadAction } from '../../models/action.model';
-import { Planet, PlanetState } from '../../models/planet.model';
+import { AnyAction } from 'redux';
+import { PlanetState } from '../../models/planet.model';
 import { PlanetActionTypes } from './planetTypes';
 
 const initialState: PlanetState = {
@@ -8,10 +8,7 @@ const initialState: PlanetState = {
   error: '',
 };
 
-const planetReducer = (
-  state = initialState,
-  action: PayloadAction<PlanetActionTypes, Array<Planet>>
-) => {
+const planetReducer = (state = initialState, action: AnyAction) => {
   switch (action.type) {
     case PlanetActionTypes.FETCH_PLANETS_REQUEST:
       return {

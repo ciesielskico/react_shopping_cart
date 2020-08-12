@@ -8,6 +8,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,6 +19,10 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+  },
+  link: {
+    textDecoration: 'none',
+    color: '#fff',
   },
 }));
 
@@ -31,13 +36,17 @@ const Navbar = ({ cartData }: any) => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            Shopping cart
+            <Link to="/" className={classes.link}>
+              Shopping cart
+            </Link>
           </Typography>
-          <IconButton>
-            <Badge badgeContent={cartData.planets.length} color="secondary">
-              <ShoppingCartIcon />
-            </Badge>
-          </IconButton>
+          <Link to="/cart">
+            <IconButton>
+              <Badge badgeContent={cartData.planets.length} color="secondary">
+                <ShoppingCartIcon />
+              </Badge>
+            </IconButton>
+          </Link>
         </Toolbar>
       </AppBar>
     </Fragment>

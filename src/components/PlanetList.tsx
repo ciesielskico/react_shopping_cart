@@ -9,6 +9,9 @@ const useStyles = makeStyles(() => ({
   button: {
     margin: '1rem',
   },
+  spinner: {
+    margin: '1rem',
+  },
 }));
 
 const PlanetList = ({ planetData, fetchPlanets, addToCart }: any) => {
@@ -19,7 +22,7 @@ const PlanetList = ({ planetData, fetchPlanets, addToCart }: any) => {
   }, []);
 
   return planetData.loading ? (
-    <CircularProgress />
+    <CircularProgress className={classes.spinner} />
   ) : planetData.errorMsg ? (
     <h2>{planetData.errorMsg}</h2>
   ) : (

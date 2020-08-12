@@ -1,18 +1,18 @@
-import { PayloadAction } from '../../models/action.model';
+import { AnyAction } from 'redux';
 import { CartState } from '../../models/cart.model';
 import { Planet, PlanetInCart } from '../../models/planet.model';
 import { CartActionTypes } from './cartTypes';
 
-const initialState = {
+const initialState: CartState = {
   planets: [],
 };
 
-const cartReducer = (state = initialState, action: PayloadAction<CartActionTypes, Planet>) => {
+const cartReducer = (state = initialState, action: AnyAction) => {
   switch (action.type) {
     case CartActionTypes.ADD_TO_CART:
       return {
         ...state,
-        planets: addToCart(state, action.payload as Planet),
+        planets: addToCart(state, action.payload),
       };
     case CartActionTypes.REMOVE_FROM_CART:
       return {
@@ -22,11 +22,7 @@ const cartReducer = (state = initialState, action: PayloadAction<CartActionTypes
     case CartActionTypes.CHANGE_PRODUCT_AMOUNT:
       return {
         ...state,
-        planets: changeProductAmount(
-          state,
-          (action.payload as any).planet,
-          (action.payload as any).increment
-        ),
+        planets: changeProductAmount(state, action.payload.planet, action.payload.increment),
       };
 
     default:
@@ -45,13 +41,11 @@ const addToCart = (state: CartState, planet: Planet) => {
 };
 
 const changeProductAmount = (state: CartState, planet: PlanetInCart, increment: boolean) => {
-  return [
-    ...state.planets,
-    {
-      ...state.planets.find((foundPlanet) => foundPlanet === planet),
-      amount: increment ? planet.amount++ : planet.amount--,
-    },
-  ];
+  const planetInCart = state.planets.find((foundPlanet) => foundPlanet === planet);
+  if (planetInCart) {
+    increment ? planetInCart.amount++ : planetInCart.amount--;
+  }
+  return state.planets;
 };
 
 export default cartReducer;
